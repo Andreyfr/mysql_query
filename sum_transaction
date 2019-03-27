@@ -1,0 +1,19 @@
+%sql
+
+select 
+  sum(cast(price as decimal(10,2))) as summa, 
+  platform_id,
+  dt
+from 
+  lts_transaction 
+where 
+    platform_id in ('WEB_CANVAS', 'ANDROID', 'IOS') 
+  and
+    dt > '2019-03-19' 
+  and 
+    dt < '2019-03-25'
+  and 
+    from_unixtime(ts/1000) between '2019-03-19 06:00:00' and '2019-03-25 06:00:00' 
+group by
+  platform_id, dt
+order by dt asc;
