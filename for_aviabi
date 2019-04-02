@@ -1,0 +1,33 @@
+%sql 
+create or replace view test_andrew
+as select 
+  count(event_id) as countSpins  
+from lts_spin 
+    where dt > '2019-03-11' 
+      and dt < '2019-03-19'
+      and from_unixtime((ts/1000), 'HH:mm:ss') between '08:05:00' and '08:23:00' 
+group by dt;
+select * from test_andrew;
+
+%sql 
+create or replace view test_andrews
+as select 
+  round(avg(c)) as avgCountSpins,
+  (
+    select 
+      count(event_id)
+    from lts_spin 
+    where dt = '2019-03-19'
+      and from_unixtime((ts/1000), 'HH:mm:ss') between '08:05:00' and '08:23:00'
+  ) as issueCountSpins
+from test_andrew;
+select * from test_andrews;
+
+%sql
+select 
+  round((((avgCountSpins - issueCountSpins)/avgCountSpins)*100),2) as percents
+from test_andrews;
+
+%sql
+drop view test_andrew;
+drop view test_andrews;
