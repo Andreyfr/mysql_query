@@ -12,7 +12,7 @@ select * from test_andrew;
 %sql 
 create or replace view test_andrews
 as select 
-  round(avg(c)) as avgCountSpins,
+  round(avg(countSpins)) as avgCountSpins,
   (
     select 
       count(event_id)
