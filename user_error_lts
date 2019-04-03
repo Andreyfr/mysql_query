@@ -1,0 +1,14 @@
+%sql
+select
+  dt,
+  from_unixtime(ts/1000) as dateTime,
+  user_id,
+  platform_id,
+  step,
+  user_agent
+from lts_flow
+where dt = '2019-04-02'
+  and user_id = '5493785'
+  and from_unixtime((ts/1000), 'HH:mm:ss') between '00:00:00' and '23:59:59'
+  and ((step like '%canceled%') or (step like '%error%'))
+order by from_unixtime(ts/1000) desc;
