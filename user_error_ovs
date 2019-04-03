@@ -1,0 +1,18 @@
+%sql
+select 
+  dt,
+  from_unixtime(ts/1000) as dateTime,
+  user_id,
+  platform_id,
+  version,
+  error_type,
+  error_title,
+  error_message,
+  error_stack_trace,
+  error_meta_data
+from ovs_error
+where user_id = '870b9c47-6f76-4aaa-b8e8-3320500e0956'
+  and dt > '2019-03-22' and dt < '2019-04-03'
+  and from_unixtime((ts/1000), 'HH:mm:ss') between '00:00:00' and '23:59:59'
+  and ((error_type like '%error%') or (error_type like '%Error%'))
+order by from_unixtime(ts/1000) desc;
